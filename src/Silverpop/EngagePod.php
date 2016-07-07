@@ -15,11 +15,11 @@ class EngagePod {
      */
     const VERSION = '0.0.2';
 
-    private $_baseUrl;
-    private $_session_encoding;
-    private $_jsessionid;
-    private $_username;
-    private $_password;
+    protected $_baseUrl;
+    protected $_session_encoding;
+    protected $_jsessionid;
+    protected $_username;
+    protected $_password;
 
     /**
      * Constructor
@@ -652,7 +652,7 @@ class EngagePod {
      * Private method: authenticate with Silverpop
      *
      */
-    private function _login($username, $password) {
+    protected function _login($username, $password) {
         $data["Envelope"] = array(
             "Body" => array(
                 "Login" => array(
@@ -677,7 +677,7 @@ class EngagePod {
      * Private method: generate the full request url
      *
      */
-    private function _getFullUrl() {
+    protected function _getFullUrl() {
         return $this->_baseUrl . (isset($this->_session_encoding) ? $this->_session_encoding : '');
     }
 
@@ -685,7 +685,7 @@ class EngagePod {
      * Private method: make the request
      *
      */
-    private function _request($data, $replace = array(), $attribs = array()) {
+    protected function _request($data, $replace = array(), $attribs = array()) {
 
         if (is_array($data))
         {
@@ -720,7 +720,7 @@ class EngagePod {
      * Private method: post the request to the url
      *
      */
-    private function _httpPost($fields) {
+    protected function _httpPost($fields) {
         $fields_string = http_build_query($fields);
         //open connection
         $ch = curl_init();
@@ -745,7 +745,7 @@ class EngagePod {
      * Private method: parse an error response from Silverpop
      *
      */
-    private function _getErrorFromResponse($response) {
+    protected function _getErrorFromResponse($response) {
         if (isset($response['Envelope']['Body']['Fault']['FaultString']) && !empty($response['Envelope']['Body']['Fault']['FaultString'])) {
             return $response['Envelope']['Body']['Fault']['FaultString'];
         }
@@ -756,7 +756,7 @@ class EngagePod {
      * Private method: determine whether a request was successful
      *
      */
-    private function _isSuccess($result) {
+    protected function _isSuccess($result) {
         if (isset($result['SUCCESS']) && in_array(strtolower($result["SUCCESS"]), array('true', 'success'))) {
             return true;
         }
